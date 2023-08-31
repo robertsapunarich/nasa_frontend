@@ -1,11 +1,30 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import getApod from './api'
 import './App.css'
+
+
 
 function App() {
   const [count, setCount] = useState(0)
+  const [url, setUrl] = useState("")
 
+  useEffect(() => {
+    const fetchApod = async () => {
+      try {
+        const resp = await getApod()
+        console.log(url)
+        const apodUrl = resp.url
+        setUrl(() => apodUrl)
+        console.log(url)
+      } catch (e) {
+        console.error("error getting apod: ", e)
+      }
+    }
+
+    fetchApod();
+  })
   return (
     <>
       <div>
@@ -14,6 +33,9 @@ function App() {
         </a>
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+        <a href="" target="_blank">
+          <img src={url} className="logo react" alt="React logo" />
         </a>
       </div>
       <h1>Vite + React</h1>
@@ -31,5 +53,6 @@ function App() {
     </>
   )
 }
+
 
 export default App
